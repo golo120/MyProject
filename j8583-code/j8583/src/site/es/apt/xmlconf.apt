@@ -1,0 +1,81 @@
+	-----
+	Configuración por XML
+	-----
+
+Configuración por XML
+
+  La clase MessageFactory puede leer un archivo XML para congfigurar sus plantillas de mensajes, encabezados ISO
+  y plantillas de lectura, que son las partes más tediosas de configurar por código.
+
+  Hay tres tipos principales de elementos que se deben especificar en el archivo de configuración: <<<header>>>,
+  <<<template>>> y <<<parse>>>. Estos deben ir dentro de un único elemento <<<j8583-config>>> en el archivo.
+  Existe un DTD disponible en {{{http://j8583.sourceforge.net/j8583.dtd}}}.
+
+* Elemento <<<header>>>
+
+  Se debe especificar un elemento <<<header>>> por cada tipo de mensaje que necesita un encabezado ISO,
+  únicamente uno por cada tipo de mensaje:
+
++-----
+<header type="0200">ISO015000050</header>
+<header type="0400">ISO015000050</header>
++-----
+
+* Elemento <<<template>>>
+
+  Cada elemento <<<template>>> define una plantilla de mensaje, con el tipo del mismo y los campos que debe
+  incluir, con sus valores ya definidos. Cada mensaje de este tipo que se pida a la fábrica de mensajes, contendrá
+  los valores definidos en la plantilla. Esto es muy útil para campos que siempre tienen el mismo valor en todos
+  los mensajes creados. Solamente se permite una plantilla por tipo.
+
++-----
+<template type="0200">
+    <field num="3" type="NUMERIC" length="6">650000</field>
+    <field num="32" type="LLVAR">456</field>
+    <field num="35" type="LLVAR">4591700012340000=</field>
+    <field num="43" type="ALPHA" length="40">Fixed-width data</field>
+    <field num="48" type="LLLVAR">Life, the Universe, and Everything|42</field>
+    <field num="49" type="ALPHA" length="3">840</field>
+    <field num="60" type="LLLVAR">B456PRO1+000</field>
+    <field num="61" type="LLLVAR">This field can have a value up to 999 characters long.</field>
+    <field num="100" type="LLVAR">999</field>
+    <field num="102" type="LLVAR">ABCD</field>
+</template>
++-----
+
+* Elemento <<<parse>>>
+
+  Cada elemento <<<parse>>> define una plantilla de lectura para un tipo de mensaje. Debe incluir todos los
+  campos que el mensaje entrante pueda contener, indicando el tipo y longitud de cada campo (la longitud depende
+  del tipo de dato). Solamente los tipos ALPHA y NUMERIC deben incluir longitud, los demás ya la tienen predefinida
+  o la toman del mismo campo cuando se lee el mensaje (LLVAR y LLLVAR).
+
++-----
+<parse type="0210">
+    <field num="3" type="NUMERIC" length="6" />
+    <field num="4" type="AMOUNT" />
+    <field num="7" type="DATE10" />
+    <field num="11" type="NUMERIC" length="6" />
+    <field num="12" type="TIME" />
+    <field num="13" type="DATE4" />
+    <field num="15" type="DATE4" />
+    <field num="17" type="DATE_EXP" />
+    <field num="32" type="LLVAR" />
+    <field num="35" type="LLVAR" />
+    <field num="37" type="NUMERIC" length="12" />
+    <field num="38" type="NUMERIC" length="6" />
+    <field num="39" type="NUMERIC" length="2" />
+    <field num="41" type="ALPHA" length="16" />
+    <field num="43" type="ALPHA" length="40" />
+    <field num="48" type="LLLVAR" />
+    <field num="49" type="ALPHA" length="3" />
+    <field num="60" type="LLLVAR" />
+    <field num="61" type="LLLVAR" />
+    <field num="70" type="ALPHA" length="3" />
+    <field num="90" type="ALPHA" length="42" />
+    <field num="100" type="LLVAR" />
+    <field num="102" type="LLVAR" />
+    <field num="126" type="LLLVAR" />
+</parse>
++-----
+  
