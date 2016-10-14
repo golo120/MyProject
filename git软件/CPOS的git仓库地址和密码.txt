@@ -1,0 +1,10 @@
+
+底层的posdevice（设备层）
+https://code.csdn.net/Innost/posdevice.git
+
+调用支付服务层定义
+https://code.csdn.net/Innost/cpospay.git
+
+账号 cposkool
+密码 abc123
+
